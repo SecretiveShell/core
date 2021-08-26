@@ -53,8 +53,6 @@ class SonarrDataUpdateCoordinator(DataUpdateCoordinator[dict]):
             update_interval=SCAN_INTERVAL,
         )
 
-    async def _no
-
     def enable_datapoint(self, datapoint: str) -> None:
         """Enable collection of a datapoint from its respective endpoint."""
         if datapoint not in self.datapoints:
