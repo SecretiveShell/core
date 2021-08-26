@@ -34,13 +34,10 @@ class SonarrDataUpdateCoordinator(DataUpdateCoordinator[dict]):
     wanted_max_items: int
 
     def __init__(
-        self, hass: HomeAssistant, *, sonarr: Sonarr, options: dict[str, Any] = None
+        self, hass: HomeAssistant, *, sonarr: Sonarr, options: dict[str, Any]
     ) -> None:
         """Initialize global Sonarr data updater."""
         self.sonarr = sonarr
-
-        if options is None:
-            options = {}
 
         self.upcoming_days = options.get(CONF_UPCOMING_DAYS, DEFAULT_UPCOMING_DAYS)
         self.wanted_max_items = options.get(
@@ -56,6 +53,8 @@ class SonarrDataUpdateCoordinator(DataUpdateCoordinator[dict]):
             update_interval=SCAN_INTERVAL,
         )
 
+    async def _no
+
     def enable_datapoint(self, datapoint: str) -> None:
         """Enable collection of a datapoint from its respective endpoint."""
         if datapoint not in self.datapoints:
@@ -65,7 +64,7 @@ class SonarrDataUpdateCoordinator(DataUpdateCoordinator[dict]):
         """Disable collection of a datapoint from its respective endpoint."""
         self.datapoints.remove(datapoint)
 
-    def get_datapoint(self, datapoint: str):
+    def get_datapoint(self, datapoint: str) -> Any:
         """Fetch datapoint from its respective endpoint."""
         if datapoint == "commands":
             return self.sonarr.commands()
@@ -81,8 +80,6 @@ class SonarrDataUpdateCoordinator(DataUpdateCoordinator[dict]):
             return self.sonarr.calendar(start=start.isoformat(), end=end.isoformat())
         if datapoint == "wanted":
             return self.sonarr.wanted(page_size=self.wanted_max_items)
-
-        return None
 
     async def _async_update_data(self) -> dict:
         """Fetch data from Sonarr."""
